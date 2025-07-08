@@ -26,23 +26,21 @@ func main() {
 	}
 	var enableVersion = os.Args[1]
 
-	if enableVersion == "" {
+	if len(possibleVersions) == 0 {
 		fmt.Println(Yellow + "version should be meaningful php version. For example: php7.3, php8.2, php8.4" + Reset)
 		return
 	}
 
-	if len(possibleVersions) == 0 {
-		fmt.Println(Yellow + "No PHP versions available to disable." + Reset)
-	} else {
-		// Disable all possible PHP versions
-		for _, version := range possibleVersions {
-			cmd := exec.Command("a2dismod", version)
-			_, err := cmd.CombinedOutput()
-			if err != nil {
-				fmt.Println(Red+"PHP version", version, "does not exist."+Reset)
-			} else {
-				fmt.Println(Green + "PHP version was successfully disabled: " + version + Reset)
-			}
+	enableVersion = "php" + enableVersion
+
+	// Disable all possible PHP versions
+	for _, version := range possibleVersions {
+		cmd := exec.Command("a2dismod", version)
+		_, err := cmd.CombinedOutput()
+		if err != nil {
+			fmt.Println(Red+"PHP version", version, "does not exist."+Reset)
+		} else {
+			fmt.Println(Green + "PHP version was successfully disabled: " + version + Reset)
 		}
 	}
 
